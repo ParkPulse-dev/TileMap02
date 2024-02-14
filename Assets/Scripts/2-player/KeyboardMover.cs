@@ -6,16 +6,18 @@ using UnityEngine.Tilemaps;
 /**
  * This component allows the player to move by clicking the arrow keys.
  */
-public class KeyboardMover : MonoBehaviour {
+public class KeyboardMover : MonoBehaviour
+{
 
     [SerializeField] InputAction moveAction;
-   
- 
+
+
     TargetMover targetMover;
 
     TileBase[] tiles;
 
-    void OnValidate() {
+    void OnValidate()
+    {
         // Provide default bindings for the input actions.
         // Based on answer by DMGregory: https://gamedev.stackexchange.com/a/205345/18261
         if (moveAction == null)
@@ -28,32 +30,39 @@ public class KeyboardMover : MonoBehaviour {
                 .With("Right", "<Keyboard>/rightArrow");
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         moveAction.Enable();
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         moveAction.Disable();
     }
 
-    protected Vector3 NewPosition() {
-        if (moveAction.WasPerformedThisFrame()) {
+    protected Vector3 NewPosition()
+    {
+        if (moveAction.WasPerformedThisFrame())
+        {
             Vector3 movement = moveAction.ReadValue<Vector2>(); // Implicitly convert Vector2 to Vector3, setting z=0.
             //Debug.Log("movement: " + movement);
             return transform.position + movement;
-        } else {
+        }
+        else
+        {
             return transform.position;
         }
     }
 
 
-    void Update()  {
+    void Update()
+    {
         transform.position = NewPosition();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if the collided object is a boat
-        if (other.CompareTag("boat") || other.CompareTag("goat") || other.CompareTag("pick") )
+        if (other.CompareTag("boat") || other.CompareTag("goat") || other.CompareTag("pick"))
         {
             // Destroy the boat
             Destroy(other.gameObject);
